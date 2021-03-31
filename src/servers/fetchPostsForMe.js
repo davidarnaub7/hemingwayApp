@@ -9,7 +9,6 @@ let lastReadedDate = new Date().toISOString();
 
 const INIT_BATCHES = 3;
 const BATCHES = 2;
-const BATCHES_WAITED = 10;
 /**
  * @func getUsers
  *
@@ -38,12 +37,7 @@ const fetchFollowers = async (
              author
            }
            content
-           likes{
-             username
-             name
-             img
-             likedOn
-           }
+           likes
            createdOn
            img
        }
@@ -81,7 +75,6 @@ const fetchFollowers = async (
         }
         if (refreshItems) {
           posts = [...fetchedPosts];
-          noMore = false;
         } else {
           if ([...posts, ...fetchedPosts].length <= 4) {
             // if lower or equal four we want to prevent from repeat elements.
@@ -121,6 +114,7 @@ const getFollowersPosts = async (
   creds,
 ) => {
   if (refreshItems) {
+    console.log('entro');
     index = 0;
     return await fetchFollowers(
       refreshItems,

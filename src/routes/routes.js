@@ -41,6 +41,7 @@ import FollowersViewer from '../view/profile/followersViewer/followersViewer';
 import {COLORS} from '../constants/constants';
 import {useTheme} from '@react-navigation/native';
 import Reader from '../view/reader/reader';
+import UserProfile from '../view/userProfile/userProfile';
 
 //CREATING STACKS AND TAB
 const OStack = createStackNavigator();
@@ -239,6 +240,11 @@ const Routes = () => {
       <RoutesStack.Screen
         name="EditProfile"
         component={EditProfileStack} // -> calling to another js sheet in which are contained all the editProfileRoutes.
+        options={{headerShown: false}}
+      />
+      <RoutesStack.Screen
+        name="UserProfile"
+        component={UserProfile} // -> calling to another js sheet in which are contained all the editProfileRoutes.
         options={{headerShown: false}}
       />
       <RoutesStack.Screen

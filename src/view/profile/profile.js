@@ -78,12 +78,7 @@ const Profile = () => {
           author
         }
         content
-        likes{
-          username
-          name
-          img
-          likedOn
-        }
+        likes
         createdOn
       }
     }`,
@@ -114,6 +109,7 @@ const Profile = () => {
         const myUser = resData.user.user;
         const newPosts = resData.getAllPostMyProfile;
 
+        console.log(newPosts);
         setRefreshing(false); //STOPPIN LOADING SPINNER UI
         dispatch(savePostChanges(newPosts));
         dispatch(updateProfile(myUser));
@@ -139,6 +135,7 @@ const Profile = () => {
           }
           style={styles.container}
           data={posts}
+          extraData={posts}
           renderItem={renderItem}
           numColumns={2}
           ItemSeparatorComponent={<View style={{height: 10}} />}

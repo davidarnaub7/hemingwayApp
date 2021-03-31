@@ -9,12 +9,15 @@ import {
 } from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateProfile} from '../../redux/actions/profileAction';
 import Axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
+
 //PARTS
 import LectureHeader from './lectureHeader/lectureHeader';
 import LectureFooter from './LectureFooter/lectureFooter';
+import LectureFooterProfile from './lectureFooterProfile/lectureFooterProfile';
 import {refresh_TokenAPI} from '../../funcs/refresh_token';
 import getErrorMsg from '../../errors/errors';
 
@@ -23,6 +26,7 @@ const Lecture = ({lecture, username, home}) => {
 
   const profile = useSelector(state => JSON.parse(state.profile.profile));
 
+  const dispatch = useDispatch();
   //INLINE STYLES
   const cardDimensions = {
     width: home
@@ -53,7 +57,7 @@ const Lecture = ({lecture, username, home}) => {
   const [icon, setIcon] = React.useState(
     profile.likes.includes(lecture._id) ? 'heart' : 'heart-outline',
   );
-  const [mg, setMg] = React.useState(lecture.likes.length);
+  const [mg, setMg] = React.useState(lecture.likes);
 
   const axiosApiInstance = Axios.create();
   const giveLike = async refreshItems => {
@@ -87,14 +91,10 @@ const Lecture = ({lecture, username, home}) => {
       let requestBody = {
         operationName: 'GiveLike',
         query: `mutation GiveLike {
-            giveLike(likeUser:{
-              username:"${profile.username}",
-              name:"${profile.name}",
-              img:${profile.image}
-            }, postID:"${lecture._id}", give: ${!lecture.likes.some(like => {
-              return like.username === profile.username;
-            })})
-
+            giveLike(likerUsername:"${profile.username}",
+             , postID:"${lecture._id}", give: ${!profile.likes.includes(
+          lecture._id,
+        )})
         }`,
       };
 
@@ -125,8 +125,28 @@ const Lecture = ({lecture, username, home}) => {
           })
           .then(resData => {
             if (resData.giveLike === 'Success') {
+              if (icon === 'heart') {
+                //UPDATING LECTURE
+                lecture.likes -= 1;
+                //UPDATING PROFILE
+                profile.likes = profile.likes.filter(like => {
+                  return like !== lecture._id;
+                });
+                //UPDATING UI
+                setMg(mg - 1 > 0 ? mg - 1 : 0);
+                //KEEPING PROFILE
+                dispatch(updateProfile(profile));
+              } else {
+                lecture.likes += 1;
+
+                //UPDATING PROFILE
+                profile.likes.push(lecture._id);
+                //UPDATING UI
+                setMg(mg + 1);
+                //KEEPING PROFILE
+                dispatch(updateProfile(profile));
+              }
               setIcon(icon === 'heart' ? 'heart-outline' : 'heart');
-              setMg();
             }
           })
           .catch(err => {
@@ -162,14 +182,26 @@ const Lecture = ({lecture, username, home}) => {
           <View style={{flex: 0.4, justifyContent: 'center'}}>
             <Text style={[styles.text, cardText]}>{lecture.title}</Text>
           </View>
-          <View style={{flex: 0.3}} />
-          <LectureFooter
-            lecture={lecture}
-            icon={icon}
-            mg={mg}
-            profile={profile}
-            giveLike={giveLike}
-          />
+          {home ? (
+            <LectureFooter
+              lecture={lecture}
+              icon={icon}
+              home={home}
+              mg={mg}
+              profile={profile}
+              giveLike={giveLike}
+            />
+          ) : (
+            <LectureFooterProfile
+              lecture={lecture}
+              width={cardDimensions.width}
+              icon={icon}
+              home={home}
+              mg={mg}
+              profile={profile}
+              giveLike={giveLike}
+            />
+          )}
         </View>
       </ImageBackground>
     </TouchableOpacity>

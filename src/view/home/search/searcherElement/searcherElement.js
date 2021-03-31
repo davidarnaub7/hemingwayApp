@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, TextInput, Dimensions} from 'react-native';
 
-const SearcherElement = ({theme}) => {
-  const [search, setSearch] = useState('');
-
+const SearcherElement = ({theme, search, setSearch}) => {
   return (
     <View style={styles.container}>
       <View
@@ -21,7 +19,7 @@ const SearcherElement = ({theme}) => {
               color: theme.colors.text,
             },
           ]}
-          onChangeText={(t) => setSearch(t)}
+          onChangeText={t => setSearch(t)}
           onEndEditing={() => {
             setSearch('');
           }}

@@ -14,8 +14,7 @@ const ReaderViewer = ({page}) => {
   const theme = useTheme();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View
-        style={[styles.container, {backgroundColor: '#010101'}]}>
+      <View style={[styles.container, {backgroundColor: '#010101'}]}>
         <View style={{width: Dimensions.get('window').width}}>
           <Text style={[styles.text, {color: 'white'}]}>{page}</Text>
         </View>

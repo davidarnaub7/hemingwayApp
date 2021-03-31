@@ -22,7 +22,7 @@ const askForCode = async (email, isLogged) => {
         variables: null,
       };
   return await Axios.post(
-    'http://192.168.1.38:3000/graphql',
+    '10.20.43.154:3000',
     JSON.stringify(requestCreateVerificationBody),
     {
       headers: {

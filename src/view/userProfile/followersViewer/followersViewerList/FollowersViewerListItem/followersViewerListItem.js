@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Image,
   Text,
@@ -8,23 +8,40 @@ import {
   View,
 } from 'react-native';
 
-const SearcherListItem = ({user, theme, navigate}) => {
-  console.log(user);
+
+//STYLE
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useTheme, useNavigation} from '@react-navigation/native';
+
+const FollowersViewerListItem = ({user}) => {
+  const [img, setImg] = useState('');
+  const theme = useTheme();
+  const nav = useNavigation();
+
   return (
     <TouchableOpacity
       style={[styles.container, {borderBottomColor: theme.colors.notification}]}
       onPress={() => {
-        navigate(user);
+        nav.navigate('UserProfile', {profile: user, img});
       }}>
       <View style={styles.joiner}>
-        <Image style={styles.img} source={{uri: user.imgUrl}} />
+        <View style={styles.rounder}>
+          <Ionicons
+            name={'person'}
+            size={15}
+            style={{alignSelf: 'center', position: 'absolute'}}
+            color={'white'}
+          />
+          <Image style={styles.img} source={{uri: img}} />
+        </View>
+
         <Text style={[styles.username, {color: theme.colors.text}]}>
           {user.username}
         </Text>
       </View>
       <Text style={[styles.pub, {color: theme.colors.text}]}>
-        {user.posts.length +
-          (user.posts.length === 1 ? ' publicación' : ' publicaciones')}
+        {user.post.items.length +
+          (user.post.items.length === 1 ? ' publicación' : ' publicaciones')}
       </Text>
     </TouchableOpacity>
   );
@@ -42,6 +59,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderBottomWidth: 0.3,
   },
+  rounder: {
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    borderColor: 'white',
+    borderWidth: 1,
+    alignSelf:'center',
+    marginLeft: 10,
+  },
   joiner: {
     flexDirection: 'row',
   },
@@ -58,6 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     alignSelf: 'center',
+    marginLeft: 10,
   },
   pub: {
     fontFamily: 'System',
@@ -68,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearcherListItem;
+export default FollowersViewerListItem;

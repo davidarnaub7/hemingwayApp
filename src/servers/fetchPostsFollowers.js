@@ -37,12 +37,7 @@ const fetchFollowers = async (
             author
           }
           content
-          likes{
-            username
-            name
-            img
-            likedOn
-          }
+          likes
           createdOn
           img
       }

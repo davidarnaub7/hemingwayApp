@@ -165,12 +165,7 @@ const LogIn = () => {
           author
         }
         content
-        likes{
-          username
-          name
-          img
-          likedOn
-        }
+        likes
         createdOn
       }
     }`,

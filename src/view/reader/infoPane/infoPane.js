@@ -1,40 +1,25 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Image,
   Dimensions,
   Text,
-  Linking,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const InfoPane = ({lecture, setModal, index, img, profile, actionSheet}) => {
+const InfoPane = ({lecture, setModal, img, profile, actionSheet}) => {
   //GLOBALS VARIABLES
   const nav = useNavigation();
   const theme = useTheme();
 
-  //MG variables handler
-  const [icon, setIcon] = useState(
-    lecture.likes.includes(profile.id) ? 'heart' : 'heart-outline',
-  );
-
-  const [mg, setMg] = React.useState(lecture.likes.length);
-
   return (
     <View style={[styles.container]}>
-      <View
-        style={{
-          justifyContent: 'space-evenly',
-          flexDirection: 'row',
-          height: Dimensions.get('window').height / 15,
-        }}>
+      <View style={styles.subContainer}>
         {profile.username === lecture.authorId ? (
           <TouchableOpacity
             style={styles.button}
@@ -47,19 +32,10 @@ const InfoPane = ({lecture, setModal, index, img, profile, actionSheet}) => {
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            style={[
-              styles.likeButton,
-              {backgroundColor: 'rgba(256,256,256,0.1)'},
-            ]}>
-            <Ionicons
-              name={icon}
-              size={30}
-              color={'#ED547D'}
-              style={{alignSelf: 'center'}}
-            />
-            <Text style={[styles.little, {color: 'white'}]}>{mg}</Text>
-          </TouchableOpacity>
+          <FastImage
+            style={styles.imgpexels}
+            source={require('../../../assets/socialNetworkLogos/pexe.png')}
+          />
         )}
         <TouchableOpacity
           style={styles.button}
@@ -75,39 +51,25 @@ const InfoPane = ({lecture, setModal, index, img, profile, actionSheet}) => {
         </TouchableOpacity>
       </View>
       <View style={{marginRight: 20}}>
-        {index === 0 ? (
-          <TouchableOpacity
-            style={styles.buttonProfile}
-            onPress={() => Linking.openURL(lecture.imageInfo.url)}>
-            <FastImage
-              style={styles.imgpexels}
-              source={require('../../../assets/socialNetworkLogos/pexe.png')}
-            />
-            <Text style={[styles.username, {color: 'white'}]}>
-              {lecture.imageInfo.author}
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={styles.buttonProfile}
-            onPress={() => nav.navigate('UserProfile')}>
-            {img === '' ? (
-              <View style={styles.rounder}>
-                <Ionicons
-                  name={'person-circle-outline'}
-                  size={30}
-                  style={{alignSelf: 'center'}}
-                  color={theme.colors.text}
-                />
-              </View>
-            ) : (
-              <FastImage source={{uri: img}} style={styles.img} />
-            )}
-            <Text style={[styles.username, {color: 'white'}]}>
-              {lecture.authorId}
-            </Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.buttonProfile}
+          onPress={() => nav.navigate('UserProfile')}>
+          {img === '' ? (
+            <View style={styles.rounder}>
+              <Ionicons
+                name={'person-circle-outline'}
+                size={30}
+                style={{alignSelf: 'center'}}
+                color={theme.colors.text}
+              />
+            </View>
+          ) : (
+            <FastImage source={{uri: img}} style={styles.img} />
+          )}
+          <Text style={[styles.username, {color: 'white'}]}>
+            {lecture.authorId}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -126,6 +88,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: Dimensions.get('window').width / 20,
+  },
+  subContainer: {
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
+    height: Dimensions.get('window').height / 15,
   },
   rounder: {
     justifyContent: 'center',

@@ -1,6 +1,6 @@
 import {useTheme} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Dimensions, Animated, FlatList} from 'react-native';
+import {View, StyleSheet, Dimensions, Animated, ActivityIndicator} from 'react-native';
 
 //REDUX
 import {useSelector} from 'react-redux';
@@ -10,7 +10,6 @@ import HomeHeader from './homeHeader/homeHeader';
 import HomeScroll from './homeScroll/homeScroll';
 import HomeSegmentControl from './homeSegmentControl/homeSegmentControl';
 import Searcher from './search/searcher';
-import {ScrollView} from 'react-native-gesture-handler';
 
 const Home = () => {
   const theme = useTheme();

@@ -1,18 +1,16 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-
+import {FlatList, StyleSheet, View} from 'react-native';
 
 //PARTS
 import SearcherListItem from './SearcherListItem/searcherListItem';
 
 const SearcherList = ({users, theme, navigate}) => {
+  const renderUsers = ({item, index}) => {
+    return <SearcherListItem user={item} theme={theme} navigate={navigate} />;
+  };
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {users.map(user => (
-          <SearcherListItem user={user} theme={theme} navigate={navigate} />
-        ))}
-      </ScrollView>
+      <FlatList renderItem={renderUsers} data={users} extraData={users} />
     </View>
   );
 };

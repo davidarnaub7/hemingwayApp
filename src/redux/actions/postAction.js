@@ -2,8 +2,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export const UPDATE_POST = 'UPDATE_POST';
 
-export const removePost = (posts, postID) => {
+export const removePost = postID => {
   return async dispatch => {
+    const posts = JSON.parse(await AsyncStorage.getItem('posts'));
     dispatch(savePostChanges(posts.filter(post => post._id !== postID)));
   };
 };

@@ -7,36 +7,117 @@ import ReaderViewer from './readerViewer/readerViewer';
 
 //REDUX
 import {useDispatch, useSelector} from 'react-redux';
-import {DeletePost} from '../../redux/actions/profileAction';
 
+//THIRD PARTY
+import Axios from 'axios';
 import ActionSheet from 'react-native-actionsheet';
+import AsyncStorage from '@react-native-community/async-storage';
+//AUXILARY FUNCS
+import {refresh_TokenAPI} from '../../funcs/refresh_token';
 
+//PARTS
 import InfoPane from './infoPane/infoPane';
 import Title from '../components/title/title';
+import {removePost} from '../../redux/actions/postAction';
+import getErrorMsg from '../../errors/errors';
 // import Sharer from '../Sharer/sharer';
 
 const Reader = props => {
   //AUX PARAMS
   const lecture = props.route.params.lecture;
 
-  console.log(lecture);
-
   //GLOBALS PARAMS
-  const theme = useTheme();
   const nav = useNavigation();
+
   //STATES
   const [sharer, setSharer] = useState(false);
   const [index, setIndex] = useState(0);
+  const [error, setError] = useState('');
+
   //REF for actionSheet
   const actionSheet = React.useRef();
+
   //REDUX
-  const dispatch = useDispatch();
   const profile = useSelector(state => JSON.parse(state.profile.profile));
 
+  const dispatch = useDispatch();
+
+  const axiosApiInstance = Axios.create();
+
+  const removePostHandler = async index => {
+    const creds = JSON.parse(await AsyncStorage.getItem('creds'));
+
+    //AXIOS INTERCEPTOR LOCALLY IN ORDER TO DISPATCH NEW CREDS
+    axiosApiInstance.interceptors.response.use(async response => {
+      if (response.data.errors) {
+        if (response.data.errors[0].message === 'Next time machine') {
+          const newcreds = await refresh_TokenAPI(
+            profile._id,
+            profile.username,
+          );
+          await AsyncStorage.setItem('creds', JSON.stringify(newcreds));
+          const originalRequest = response.config;
+          originalRequest.headers.Authorization =
+            'Bearer ' + newcreds.token + ' ' + profile.username;
+
+          return axiosApiInstance.request(originalRequest);
+        }
+      }
+      return response;
+    });
+
+    try {
+      let requestBody = {
+        operationName: 'RemovePost',
+        query: `  mutation RemovePost{
+            removePost(username:"${profile.username}", postID:"${lecture._id}")
+        }`,
+      };
+
+      console.log(requestBody);
+
+      try {
+        return await axiosApiInstance
+          .post(
+            'http://192.168.1.38:3000/graphql',
+            JSON.stringify(requestBody),
+            {
+              headers: {
+                Authorization: 'Bearer ' + creds.token + ' ' + profile.username,
+                'Content-Type': 'application/json',
+              },
+            },
+          )
+          .then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+              throw new Error('Failed!');
+            }
+
+            if (res.data.errors) {
+              throw new Error(res.data.errors[0].message);
+            }
+
+            return res.data.data;
+          })
+          .then(resData => {
+            if (resData.removePost === 'Success') {
+              dispatch(removePost(lecture._id));
+              nav.goBack();
+            }
+          })
+          .catch(err => {
+            throw err;
+          });
+      } catch (err) {
+        throw err;
+      }
+    } catch (err) {
+      setError(getErrorMsg(err.toString().split(':')[1].trim()));
+    }
+  };
   // It is necesary cause react-native-view-shoot takes the screen an avoid modal. So Sharer must be a normal View.
   return (
-    <View
-      style={[styles.container, {backgroundColor: '#010101'}]}>
+    <View style={[styles.container, {backgroundColor: '#010101'}]}>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -45,7 +126,7 @@ const Reader = props => {
         onScroll={({nativeEvent}) => {
           //Floor and ceil depending on what index we are in order to a faster icon colo repaint.
           setIndex(
-            Math.floor(
+            Math.round(
               nativeEvent.contentOffset.x / Dimensions.get('window').width,
             ),
           );
@@ -69,8 +150,8 @@ const Reader = props => {
         profile={profile}
         setModal={setSharer}
         actionSheet={actionSheet}
-        index={index}
         img={lecture.img}
+        removePost={removePost}
       />
       {/* Modal use it in case the post is done by himself */}
       <ActionSheet
@@ -80,8 +161,7 @@ const Reader = props => {
         destructiveButtonIndex={1}
         onPress={indx => {
           if (indx === 0) {
-            dispatch(DeletePost(lecture, profile));
-            nav.goBack();
+            removePostHandler();
           }
         }}
       />

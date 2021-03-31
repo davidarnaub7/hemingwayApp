@@ -6,6 +6,7 @@ import {
   FlatList,
   RefreshControl,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 
 import Axios from 'axios'; //AXIOS
@@ -124,7 +125,7 @@ const HomeScroll = ({setModal, profile, flag}) => {
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     setNoMore(false);
-    await getPostsHandler();
+    await getPostsHandler(true);
     setRefreshing(false);
   }, []);
 
@@ -133,7 +134,16 @@ const HomeScroll = ({setModal, profile, flag}) => {
       <FlatList
         style={{flex: 1}}
         showsVerticalScrollIndicator={false}
-        ListEmptyComponent={<EmptyPostMessage setModal={setModal} />}
+        ListEmptyComponent={
+          fetching ? (
+            <View
+              style={styles.activityIndicator}>
+              <ActivityIndicator size={'large'} />
+            </View>
+          ) : (
+            <EmptyPostMessage setModal={setModal} />
+          )
+        }
         data={posts}
         extraData={posts}
         refreshControl={
@@ -162,6 +172,11 @@ const styles = StyleSheet.create({
   container: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+  },
+  activityIndicator:{
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    justifyContent: 'center',
   },
   row: {
     flexDirection: 'row',
