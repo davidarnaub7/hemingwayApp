@@ -165,7 +165,7 @@ const Lecture = ({lecture, username, home}) => {
         nav.navigate('Reader', {lecture: lecture, username: username})
       }>
       <ImageBackground
-        source={{uri: lecture.imageInfo.url}}
+        source={{uri: lecture.imageInfo.bck}}
         style={[
           styles.container,
           {cardDimensions},
@@ -190,6 +190,7 @@ const Lecture = ({lecture, username, home}) => {
               mg={mg}
               profile={profile}
               giveLike={giveLike}
+              nav={nav}
             />
           ) : (
             <LectureFooterProfile

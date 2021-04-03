@@ -42,6 +42,8 @@ import {COLORS} from '../constants/constants';
 import {useTheme} from '@react-navigation/native';
 import Reader from '../view/reader/reader';
 import UserProfile from '../view/userProfile/userProfile';
+import Creator from '../view/creator/creator';
+import Launcher from '../view/creator/launcher/launcher';
 
 //CREATING STACKS AND TAB
 const OStack = createStackNavigator();
@@ -250,6 +252,16 @@ const Routes = () => {
       <RoutesStack.Screen
         name="Reader"
         component={Reader} // -> calling to another js sheet in which are contained all the editProfileRoutes.
+        options={{headerShown: false}}
+      />
+      <RoutesStack.Screen
+        name="Creator"
+        component={Creator} // -> calling to another js sheet in which are contained all the editProfileRoutes.
+        options={{headerShown: false}}
+      />
+      <RoutesStack.Screen
+        name="CreatorLauncher"
+        component={Launcher} // -> calling to another js sheet in which are contained all the editProfileRoutes.
         options={{headerShown: false}}
       />
       <RoutesStack.Screen

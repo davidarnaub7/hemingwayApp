@@ -91,7 +91,7 @@ const Searcher = ({setModal, modal, profile}) => {
   };
 
   useEffect(() => {
-    if (searchTerm !== '' && searchTerm.length > 1) {
+    if (searchTerm !== '') {
       fetchUsersHandler();
     }
   }, [searchTerm]);

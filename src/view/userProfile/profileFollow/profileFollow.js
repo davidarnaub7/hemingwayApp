@@ -7,17 +7,25 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../constants/constants';
 
-import {useDispatch} from 'react-redux';
-
-const ProfileFollow = ({profile, img, isFollowing, setIsFollowing}) => {
+const ProfileFollow = ({
+  follow,
+  profile,
+  img,
+  isFollowing,
+  setIsFollowing,
+  fetching,
+}) => {
   const theme = useTheme();
 
-  return (
+  return fetching ? (
+    <ActivityIndicator size="large" style={{color: theme.colors.text}} />
+  ) : (
     <View style={styles.container}>
       {img === '' ? (
         <View style={styles.rounder}>
@@ -42,6 +50,7 @@ const ProfileFollow = ({profile, img, isFollowing, setIsFollowing}) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
+          follow();
           setIsFollowing(!isFollowing);
         }}>
         <Text style={styles.buttonText}>

@@ -12,12 +12,20 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import FastImage from 'react-native-fast-image'; //THIRD PARTY MODULE
 
-const LectureFooter = ({lecture, profile, giveLike, mg, icon}) => {
+const LectureFooter = ({lecture, profile, giveLike, mg, icon, nav}) => {
   //RETURN FUNC
   return (
     <View style={[styles.container]}>
       <View style={styles.linearRow}>
-        <TouchableOpacity style={styles.row}>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() => {
+            return lecture.authorId === profile.username
+              ? nav.navigate('profile')
+              : nav.navigate('UserProfile', {
+                  profile: {username: lecture.authorId, imgUrl: lecture.img},
+                });
+          }}>
           {lecture.img === '' ? (
             <View style={styles.rounder}>
               <Ionicons

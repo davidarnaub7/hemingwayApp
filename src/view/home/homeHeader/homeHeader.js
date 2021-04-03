@@ -28,7 +28,7 @@ const HomeHeader = ({setModal}) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, {backgroundColor: COLORS.socialButton}]}
-            onPress={() => nav.navigate('creator')}>
+            onPress={() => nav.navigate('Creator')}>
             <Ionicons
               name={'pencil'}
               size={20}

@@ -21,8 +21,6 @@ import {useNavigation, useTheme} from '@react-navigation/native'; //THEME AND NA
 import {COLORS} from '../../../../../constants/constants'; //COLORS STYLING
 import Entypo from 'react-native-vector-icons/Entypo'; //ICONS
 Entypo.loadFont();
-import getErrorMsg from '../../../../../errors/errors';
-// import {logCustomEvent} from '../../../../../analytics/analytics';
 
 //CONSTANTS DIMENSIONS
 const WIDTH = Dimensions.get('window').width / 1.2;
