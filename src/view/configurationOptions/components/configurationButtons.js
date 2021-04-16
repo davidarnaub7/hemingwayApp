@@ -93,7 +93,7 @@ const ConfigurationButtons = ({setError, options, label}) => {
     });
 
     return await axiosApiInstance
-      .post('http://192.168.1.38:3000/graphql', JSON.stringify(requestBody), {
+      .post('http://192.168.1.37:3000/graphql', JSON.stringify(requestBody), {
         headers: {
           Authorization: 'Bearer ' + creds.token + ' ' + myUser.username,
           'Content-Type': 'application/json',

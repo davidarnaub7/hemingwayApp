@@ -103,7 +103,7 @@ const LogIn = () => {
     setFetching(true);
 
     Axios.post(
-      'http://192.168.1.38:3000/graphql',
+      'http://192.168.1.37:3000/graphql',
       JSON.stringify(requestLoginBody),
       {
         headers: {
@@ -178,7 +178,7 @@ const LogIn = () => {
    */
   const fetchUserData = creds => {
     Axios.post(
-      'http://192.168.1.38:3000/graphql',
+      'http://192.168.1.37:3000/graphql',
       JSON.stringify(requestUser),
       {
         headers: {

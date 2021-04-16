@@ -101,7 +101,7 @@ const UserProfile = props => {
       };
 
       axiosApiInstance
-        .post('http://192.168.1.38:3000/graphql', JSON.stringify(requestBody), {
+        .post('http://192.168.1.37:3000/graphql', JSON.stringify(requestBody), {
           headers: {
             Authorization: 'Bearer ' + creds.token + ' ' + myProfile.username,
             'Content-Type': 'application/json',
@@ -184,7 +184,7 @@ const UserProfile = props => {
     });
 
     return axiosApiInstance
-      .post('http://192.168.1.38:3000/graphql', JSON.stringify(requestBody), {
+      .post('http://192.168.1.37:3000/graphql', JSON.stringify(requestBody), {
         headers: {
           Authorization: 'Bearer ' + creds.token + ' ' + myProfile.username,
           'Content-Type': 'application/json',

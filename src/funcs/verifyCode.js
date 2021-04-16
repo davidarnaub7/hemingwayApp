@@ -14,7 +14,7 @@ const verifyCode = async (email, token) => {
   };
 
   return await Axios.post(
-    'http://192.168.1.38:3000/graphql',
+    'http://192.168.1.37:3000/graphql',
     JSON.stringify(verifyCodeBody),
     {
       headers: {

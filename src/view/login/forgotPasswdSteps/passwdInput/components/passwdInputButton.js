@@ -72,7 +72,7 @@ const PasswdInputButton = ({email, enteredCode, setError}) => {
   const changePasswdHandler = async (event) => {
     event.preventDefault();
     Axios.post(
-      'http://192.168.1.38:3000/graphql',
+      'http://192.168.1.37:3000/graphql',
       JSON.stringify(requestBody),
       {
         headers: {

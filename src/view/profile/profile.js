@@ -70,6 +70,7 @@ const Profile = () => {
         }
       }
       getAllPostMyProfile(username: "${profile.username}"){
+        _id
         title
         authorId
         imageInfo{
@@ -85,7 +86,7 @@ const Profile = () => {
     };
     const creds = JSON.parse(await AsyncStorage.getItem('creds'));
     Axios.post(
-      'http://192.168.1.38:3000/graphql',
+      'http://192.168.1.37:3000/graphql',
       JSON.stringify(requestUser),
       {
         headers: {
@@ -107,9 +108,8 @@ const Profile = () => {
       })
       .then(async resData => {
         const myUser = resData.user.user;
-        const newPosts = resData.getAllPostMyProfile;
+        const newPosts = resData.getAllPostMyProfile.reverse();
 
-        console.log(newPosts);
         setRefreshing(false); //STOPPIN LOADING SPINNER UI
         dispatch(savePostChanges(newPosts));
         dispatch(updateProfile(myUser));
@@ -121,24 +121,30 @@ const Profile = () => {
       });
   }, [dispatch, profile.username]);
 
+
   return (
     <View style={styles.container}>
       <ProfileHeader profile={profile} img={profileMediaImg} />
       <View style={styles.listContainer}>
         <FlatList
-          ListHeaderComponent={
+          ListHeaderComponent={() => (
             <ProfileInfo profile={profile} img={profileMediaImg} />
-          }
+          )}
           ListHeaderComponentStyle={styles.listHeader}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={'black'}
+            />
           }
           style={styles.container}
           data={posts}
           extraData={posts}
           renderItem={renderItem}
           numColumns={2}
-          ItemSeparatorComponent={<View style={{height: 10}} />}
+          ItemSeparatorComponent={() => <View style={{height: 10}} />}
+          ListFooterComponent={() => <View style={{height: 100}} />}
         />
       </View>
     </View>
@@ -147,7 +153,7 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  listContainer: {flex: 0.8, marginLeft: 3},
+  listContainer: {flex: 1, marginLeft: 3},
   listHeader: {paddingBottom: 20},
 });
 

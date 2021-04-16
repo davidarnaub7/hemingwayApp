@@ -46,7 +46,7 @@ const fetchFollowers = async (
 
   try {
     return await axiosApiInstance
-      .post('http://192.168.1.38:3000/graphql', JSON.stringify(requestBody), {
+      .post('http://192.168.1.37:3000/graphql', JSON.stringify(requestBody), {
         headers: {
           Authorization: 'Bearer ' + creds.token + ' ' + username,
           'Content-Type': 'application/json',

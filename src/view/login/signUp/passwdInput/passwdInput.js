@@ -111,7 +111,7 @@ const PasswdInput = props => {
    * It calls to the API and tries to signUp the user.
    */
   const signUpHandler = async () => {
-    Axios.post('http://192.168.1.38:3000/graphql', JSON.stringify(requestBody), {
+    Axios.post('http://192.168.1.37:3000/graphql', JSON.stringify(requestBody), {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -139,7 +139,7 @@ const PasswdInput = props => {
   };
 
   const loginHandler = async () => {
-    Axios.post('http://192.168.1.38:3000/graphql', JSON.stringify(requestLoginBody), {
+    Axios.post('http://192.168.1.37:3000/graphql', JSON.stringify(requestLoginBody), {
       headers: {
         'Content-Type': 'application/json',
       },

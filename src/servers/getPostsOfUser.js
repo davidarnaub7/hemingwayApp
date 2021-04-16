@@ -45,7 +45,7 @@ const fetchPosts = async (
   };
 
   return axiosApiInstance
-    .post('http://192.168.1.38:3000/graphql', JSON.stringify(requestUser), {
+    .post('http://192.168.1.37:3000/graphql', JSON.stringify(requestUser), {
       headers: {
         Authorization: 'Bearer ' + creds.token + ' ' + username,
         'Content-Type': 'application/json',

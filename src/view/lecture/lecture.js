@@ -54,6 +54,7 @@ const Lecture = ({lecture, username, home}) => {
 
   ///DATA HOOKS
   const [error, setError] = useState('');
+
   const [icon, setIcon] = React.useState(
     profile.likes.includes(lecture._id) ? 'heart' : 'heart-outline',
   );
@@ -103,7 +104,7 @@ const Lecture = ({lecture, username, home}) => {
       try {
         return await axiosApiInstance
           .post(
-            'http://192.168.1.38:3000/graphql',
+            'http://192.168.1.37:3000/graphql',
             JSON.stringify(requestBody),
             {
               headers: {

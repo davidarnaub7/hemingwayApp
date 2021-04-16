@@ -23,7 +23,13 @@ const Searcher = ({setModal, modal, profile}) => {
 
   const navigate = selectedProfile => {
     setModal(false);
-    nav.navigate('UserProfile', {profile: selectedProfile});
+    if(profile.username === selectedProfile.username) {
+
+      nav.navigate('profile');
+    }else{
+
+      nav.navigate('UserProfile', {profile: selectedProfile});
+    }
   };
 
   //UI HOOKS

@@ -79,7 +79,7 @@ const Reader = props => {
       try {
         return await axiosApiInstance
           .post(
-            'http://192.168.1.38:3000/graphql',
+            'http://192.168.1.37:3000/graphql',
             JSON.stringify(requestBody),
             {
               headers: {
